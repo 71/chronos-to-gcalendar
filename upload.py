@@ -83,7 +83,7 @@ def get_schedule(group: str, start: Optional[date] = None, end: Optional[date] =
 
     json = data.json()
 
-    if json:
+    if not json:
         raise Exception('Could not read data.')
     
     return json['data']['classes']
