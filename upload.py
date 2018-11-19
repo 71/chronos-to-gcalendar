@@ -79,11 +79,14 @@ def get_schedule(group: str, start: Optional[date] = None, end: Optional[date] =
     '''
 
     data = requests.get('https://chronosql.gregoirege.is', params={'query': query})
+    data.raise_for_status()
 
-    if not data:
-        return []
+    json = data.json()
+
+    if json:
+        raise Exception('Could not read data.')
     
-    return data.json()['data']['classes']
+    return json['data']['classes']
 
 
 Course = Dict[str, Any]
@@ -125,6 +128,9 @@ def upload_schedule(service, calendarId: str, group: str, start: Optional[date] 
 
     courses = get_schedule(group, start, end)
     events  = get_events(service, calendarId, start, end)
+
+    if not courses:
+        raise Exception('Server did not send back any courses for {} group.'.format(group))
     
 
     # Filter out events we don't care about
