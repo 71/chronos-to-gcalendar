@@ -63,3 +63,25 @@ python launch.py
 ```
 
 ![Screenshot of Google Calendar](screenshot.png)
+
+## Notice
+When running the script several times, events are not duplicated. However, courses
+that have been removed from Chronos are removed from the calendar, and courses that
+have been added to Chronos are also added to the calendar.
+
+Therefore, it is perfectly valid to have a script that repeats the update process:
+```python
+import time
+
+while True:
+    try:
+        service = connect_calendar()
+        upload_schedule(service, CALENDAR_ID, GROUP)
+    except KeyboardInterrupt:
+        exit()
+    except:
+        print('Error encountered.')
+    
+    time.sleep(3600) # Sleep for an hour
+    
+```
