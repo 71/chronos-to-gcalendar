@@ -130,7 +130,7 @@ def upload_schedule(service, calendarId: str, group: str, start: Optional[date] 
     events  = get_events(service, calendarId, start, end)
 
     if not courses:
-        raise Exception('Server did not send back any courses for {} group.'.format(group))
+        raise Exception('Server did not send back any courses for the {} group.'.format(group))
     
 
     # Filter out events we don't care about
@@ -151,9 +151,9 @@ def upload_schedule(service, calendarId: str, group: str, start: Optional[date] 
         }
 
         if course['locations']:
-            body['location'] = course['locations'][0]['name']
+            body['location'] = ', '.join([ loc['name'] for loc in course['locations'] ])
         if course['staff']:
-            body['description'] = f'Avec {course["staff"][0]["name"]}.'
+            body['description'] = f'Avec {", ".join([ staff["name"] for staff in course["staff"] ])}.'
 
 
         # Find out if this course has already been added
